@@ -104,7 +104,7 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: "https://suc.suki.icu",
+        customBackend: this.getUrlParam() == "" ? "https://suc.suki.icu" : this.getUrlParam(),
         remoteConfig: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_MultiMode.ini",
         excludeRemarks: "",
         includeRemarks: "",
@@ -153,7 +153,7 @@ export default {
           ClashR: "clashr",
           Loon: "loon",
           Mellow: "mellow",
-          "混合订阅（mixed）": "mixed",
+          "混合订阅(mixed)": "mixed",
           "自动判断客户端": "auto",
         },
         customBackend: {
@@ -233,13 +233,108 @@ export default {
         ],
       },
       collapse: false,
-      loading1: false,
-      loading2: false,
-      loading3: false,
-      customSubUrl: ""
+      customSubUrl: "",
+      backendVersion: "",
+      btnBoolean: false,
     };
   },
   methods: {
+    makeUrl() {
+      if (this.form.sourceSubUrl === "" || this.form.clientType === "") {
+        ElMessage.error("订阅链接与客户端为必填项");
+        return false;
+      }
+      let backend =
+          this.form.customBackend === ""
+              ? defaultBackend
+              : this.form.customBackend;
+      let sourceSub = this.form.sourceSubUrl;
+      sourceSub = sourceSub.replace(/(\n|\r|\n\r)/g, "|");
+      this.customSubUrl =
+          backend +
+          "/sub?target=" +
+          this.form.clientType +
+          "&url=" +
+          encodeURIComponent(sourceSub) +
+          "&insert=" +
+          this.form.insert;
+      if (this.form.remoteConfig !== "") {
+        this.customSubUrl +=
+            "&config=" + encodeURIComponent(this.form.remoteConfig);
+      }
+      if (this.form.excludeRemarks !== "") {
+        this.customSubUrl +=
+            "&exclude=" + encodeURIComponent(this.form.excludeRemarks);
+      }
+      if (this.form.includeRemarks !== "") {
+        this.customSubUrl +=
+            "&include=" + encodeURIComponent(this.form.includeRemarks);
+      }
+      if (this.form.filename !== "") {
+        this.customSubUrl +=
+            "&filename=" + encodeURIComponent(this.form.filename);
+      }
+      if (this.form.rename !== "") {
+        this.customSubUrl +=
+            "&rename=" + encodeURIComponent(this.form.rename);
+      }
+      if (this.form.interval !== "") {
+        this.customSubUrl +=
+            "&interval=" + encodeURIComponent(this.form.interval * 86400);
+      }
+      if (this.form.devid !== "") {
+        this.customSubUrl +=
+            "&dev_id=" + encodeURIComponent(this.form.devid);
+      }
+      if (this.form.appendType) {
+        this.customSubUrl +=
+            "&append_type=" + this.form.appendType.toString();
+      }
+      if (this.form.tls13) {
+        this.customSubUrl +=
+            "&tls13=" + this.form.tls13.toString();
+      }
+      if (this.form.sort) {
+        this.customSubUrl +=
+            "&sort=" + this.form.sort.toString();
+      }
+      this.customSubUrl +=
+          "&emoji=" +
+          this.form.emoji.toString() +
+          "&list=" +
+          this.form.nodeList.toString() +
+          "&xudp=" +
+          this.form.xudp.toString() +
+          "&udp=" +
+          this.form.udp.toString() +
+          "&tfo=" +
+          this.form.tfo.toString() +
+          "&expand=" +
+          this.form.expand.toString() +
+          "&scv=" +
+          this.form.scv.toString() +
+          "&fdn=" +
+          this.form.fdn.toString();
+      if (this.form.tpl.surge.doh === true) {
+        this.customSubUrl += "&surge.doh=true";
+      }
+      if (this.form.clientType === "clash") {
+        if (this.form.tpl.clash.doh === true) {
+          this.customSubUrl += "&clash.doh=true";
+        }
+        this.customSubUrl += "&new_name=" + this.form.new_name.toString();
+      }
+      this.copyToClipboard();
+      ElMessage.success("定制订阅已复制到剪贴板");
+    },
+    copyToClipboard() {
+      const input = document.createElement('input');
+      input.value = this.customSubUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    },
     toggleCollapse() {
       this.collapse = !this.collapse; // 切换折叠状态
     },
@@ -257,10 +352,24 @@ export default {
       }
       return "";
     },
+    getBackendVersion() {
+      this.$axios
+          .get(
+              this.form.customBackend + "/version",
+          )
+          .then(res => {
+            this.backendVersion = res.data.replace(/backend\n$/gm, "");
+            this.backendVersion = this.backendVersion.replace("subconverter", "SubConverter");
+            ElMessage.success(`${this.backendVersion}` + "连接成功！")
+          })
+          .catch(() => {
+            ElMessage.error("请求SubConverter版本号返回数据失败，该后端不可用！");
+          });
+    },
   },
   mounted() {
     this.form.clientType = "clash";
-/*    this.getBackendVersion();*/
+    this.getBackendVersion();
   },
 };
 </script>
