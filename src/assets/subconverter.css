@@ -1,0 +1,68 @@
+.sub-form {
+    transition: all 0.3s ease; /* 添加动画效果 */
+    border: 2px solid #ffffff; /* 边框样式和颜色 */
+    border-radius: 10px; /* 圆角半径 */
+    padding: 20px; /* 内边距 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    background-color: #ffffff; /* 背景颜色 */
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.flex-item {
+    width: 49%;
+}
+
+.outer-flex-container {
+    width: 100%; /* 设置外层容器的宽度为100% */
+}
+
+.inner-flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-left {
+    width: 75%; /* 设置 select 的宽度为90% */
+}
+
+.flex-right {
+    width: 23%; /* 设置 button 的宽度为10% */
+}
+
+.checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    /* 在小屏幕上，设置为一列 */
+    @media (max-width: 600px) {
+        .checkboxes {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 在中等屏幕上，设置为两列 */
+    @media (min-width: 601px) and (max-width: 900px) {
+        .checkboxes {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* 在大屏幕上，设置为三列 */
+    @media (min-width: 901px) and (max-width: 1200px) {
+        .checkboxes {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* 在更大的屏幕上，设置为四列 */
+    @media (min-width: 1201px) {
+        .checkboxes {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+}

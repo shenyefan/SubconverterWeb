@@ -13,15 +13,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #282C3E;
-  text-align: center;
-  color: #ffffff; /* 设置文字颜色 */
-}
-</style>

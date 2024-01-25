@@ -1,7 +1,9 @@
 <template>
-  <el-container>
+  <el-container class="container">
     <el-header><Navbar /></el-header>
+    <br/>
     <el-main><Subconverter /></el-main>
+    <br/>
     <el-footer><Footer /></el-footer>
   </el-container>
 </template>
@@ -14,4 +16,3 @@ export default {
   components: {Footer, Subconverter, Navbar},
 };
 </script>
-
