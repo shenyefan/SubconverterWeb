@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <p>© 2023-{{ currentYear }} shenyefan</p>
+    <p>© 2022-{{ currentYear }} shenyefan</p>
   </div>
 </template>
 

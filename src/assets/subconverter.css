@@ -34,6 +34,10 @@
     width: 23%; /* 设置 button 的宽度为10% */
 }
 
+.el-collapse {
+    border: none;
+}
+
 .checkboxes {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

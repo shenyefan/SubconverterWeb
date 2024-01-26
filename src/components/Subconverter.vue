@@ -1,7 +1,6 @@
 <template>
   <div class="sub-container">
     <el-form :label-position="'top'" class="sub-form">
-
       <el-form-item label="订阅链接">
         <el-input v-model="form.sourceSubUrl" type="textarea" rows="3" resize="none" placeholder="支持各种订阅链接或单节点链接，多个链接每行一个或用 | 分隔"/>
       </el-form-item>
@@ -19,7 +18,6 @@
         </el-form-item>
       </div>
 
-
       <el-form-item label="远程配置" class="outer-flex-container">
         <div class="flex-container inner-flex-container">
           <el-select v-model="form.remoteConfig" allow-create filterable placeholder="请选择" class="flex-left">
@@ -27,33 +25,33 @@
               <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-option-group>
           </el-select>
-          <el-button @click="toggleCollapse" class="flex-right">更多</el-button>
+          <el-button @click="toggleCollapse" class="flex-right">参数</el-button>
         </div>
       </el-form-item>
 
       <el-collapse-transition>
         <el-collapse v-if="collapse">
           <div class="flex-container">
-            <el-form-item label="包含节点:" class="flex-item">
+            <el-form-item label="包含节点" class="flex-item">
               <el-input v-model="form.includeRemarks" placeholder="要保留的节点，支持正则"/>
             </el-form-item>
-            <el-form-item label="排除节点:" class="flex-item">
+            <el-form-item label="排除节点" class="flex-item">
               <el-input v-model="form.excludeRemarks" placeholder="要排除的节点，支持正则"/>
             </el-form-item>
           </div>
           <div class="flex-container">
-            <el-form-item label="节点命名:" class="flex-item">
+            <el-form-item label="节点命名" class="flex-item">
               <el-input v-model="form.rename" placeholder="举例：`a@b``1@2`，|符可用\转义"/>
             </el-form-item>
-            <el-form-item label="远程设备:" class="flex-item">
+            <el-form-item label="远程设备" class="flex-item">
               <el-input v-model="form.devid" placeholder="用于设置QuantumultX的远程设备ID"/>
             </el-form-item>
           </div>
           <div class="flex-container">
-            <el-form-item label="更新间隔:" class="flex-item">
+            <el-form-item label="更新间隔" class="flex-item">
               <el-input v-model="form.interval" placeholder="返用于设置托管配置更新间隔，单位为天"/>
             </el-form-item>
-            <el-form-item label="订阅命名:" class="flex-item">
+            <el-form-item label="订阅命名" class="flex-item">
               <el-input v-model="form.filename" placeholder="返回的订阅文件名，可以在支持文件名的客户端中显示出来"/>
             </el-form-item>
           </div>
@@ -77,19 +75,12 @@
           </div>
 
         </el-collapse>
-
       </el-collapse-transition>
 
-      <el-form-item label="定制订阅:" class="outer-flex-container">
+      <el-form-item label="定制订阅" class="outer-flex-container">
         <div class="flex-container inner-flex-container">
           <el-input class="copy-content flex-left" disabled v-model="customSubUrl"></el-input>
-          <el-button
-              type="danger"
-              @click="makeUrl"
-              :disabled="form.sourceSubUrl.length === 0 || btnBoolean"
-              class="flex-right"
-          >转换
-          </el-button>
+          <el-button type="danger" @click="makeUrl" :disabled="form.sourceSubUrl.length === 0 || btnBoolean" class="flex-right">转换</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -104,7 +95,7 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: this.getUrlParam() == "" ? "https://suc.suki.icu" : this.getUrlParam(),
+        customBackend: this.getUrlParam() === "" ? "https://suc.suki.icu" : this.getUrlParam(),
         remoteConfig: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_MultiMode.ini",
         excludeRemarks: "",
         includeRemarks: "",
@@ -327,13 +318,12 @@ export default {
       this.copyToClipboard();
       ElMessage.success("定制订阅已复制到剪贴板");
     },
-    copyToClipboard() {
-      const input = document.createElement('input');
-      input.value = this.customSubUrl;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
+    async copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText(this.customSubUrl);
+      } catch (err) {
+        console.error('无法将文本复制到剪贴板', err);
+      }
     },
     toggleCollapse() {
       this.collapse = !this.collapse; // 切换折叠状态
@@ -345,8 +335,8 @@ export default {
       let query = window.location.search.substring(1);
       let vars = query.split('&');
       for (let i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (pair[0] == "backend") {
+        const pair = vars[i].split('=');
+        if (pair[0] === "backend") {
           return decodeURIComponent(pair[1]);
         }
       }
