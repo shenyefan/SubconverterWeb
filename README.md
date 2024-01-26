@@ -1,31 +1,22 @@
-# untitled
+# Subconverter Web
 
-This template should help get you started developing with Vue 3 in Vite.
+本项目基于[原项目](https://github.com/CareyWang/sub-web)使用Vue3重构，重构css样式，更好看(大概)
 
-## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and
-disable
-Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## 安装依赖
 
 ```sh
-npm install
+pnpm i
 ```
 
-### Compile and Hot-Reload for Development
+### 运行
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
-### Compile and Minify for Production
+### 编译
 
 ```sh
-npm run build
+pnpm run build
 ```
