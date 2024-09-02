@@ -96,7 +96,7 @@ export default {
         sourceSubUrl: "",
         clientType: "",
         customBackend: this.getUrlParam() === "" ? "https://suc.suki.icu" : this.getUrlParam(),
-        remoteConfig: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_MultiMode.ini",
+        remoteConfig: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full.ini",
         excludeRemarks: "",
         includeRemarks: "",
         filename: "",
